@@ -37,3 +37,4 @@ Stack Trace:
 - /var/www/html/assesment-5/bin/cake.php:12
 
 2023-01-20 04:36:20 warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2023-01-20 04:50:24 warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
