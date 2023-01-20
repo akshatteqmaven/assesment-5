@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -16,6 +17,7 @@ use Cake\ORM\Entity;
  * @property string $password
  * @property string $confirm_password
  * @property string $gender
+ * @property string $user_details
  */
 class User extends Entity
 {
@@ -36,6 +38,7 @@ class User extends Entity
         'password' => true,
         'confirm_password' => true,
         'gender' => true,
+        'user_details' => true,
     ];
 
     /**

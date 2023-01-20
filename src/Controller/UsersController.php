@@ -1,7 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+
+use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
+use Cake\ORM\Table;
+use Cake\Validation\Validator;
+use Cake\ORM\TableRegistry;
+use Cake\Auth\DefaultPasswordHasher;
 
 /**
  * Users Controller
@@ -101,5 +109,48 @@ class UsersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    // Login function
+    public function login()
+    {
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+                return $this->redirect(['controller' => 'users/index']);
+            }
+            //not login
+            $this->Flash->error('Please enter your correct login credentials');
+        }
+    }
+    //logout function
+    public function logout()
+    {
+        $this->Flash->success('You are Loged out now ');
+        return $this->redirect($this->Auth->logout());
+    }
+
+    //registration funtion
+    public function register()
+    {
+        $user = $this->Users->newEmptyEntity();
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+            // $productImage = $this->request->getData("file");
+            // $fileName = $productImage->getClientFilename();
+            // $data["file"] = $fileName;
+            $user = $this->Users->patchEntity($user, $data);
+            if ($this->Users->save($user)) {
+                $this->Flash->success('You are Registered and you can login now');
+                return $this->redirect(['action' => 'login']);
+            } else {
+                $this->Flash->error('Something went wrong');
+            }
+        }
+        $this->set(compact('user'));
+        $this->set('_serialzie', ['user']);
+    }
+    public function home()
+    {
     }
 }

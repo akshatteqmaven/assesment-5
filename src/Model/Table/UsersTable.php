@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -40,6 +41,7 @@ class UsersTable extends Table
         $this->setTable('users');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+        $this->hasOne('user_details');
     }
 
     /**
@@ -52,44 +54,118 @@ class UsersTable extends Table
     {
         $validator
             ->scalar('first_name')
-            ->maxLength('first_name', 155)
+            ->maxLength('first_name', 50)
             ->requirePresence('first_name', 'create')
-            ->notEmptyString('first_name');
+            ->notBlank('first_name')
+            ->notEmptyString('first_name', 'Please enter your First Name')
+            ->add('first_name', [
+
+                'characters' => [
+                    'rule'    => ['custom', '/^[A-Z]+$/i'],
+                    'allowEmpty' => false,
+                    'last' => true,
+                    'message' => 'Please Enter characters only.'
+                ],
+            ]);
 
         $validator
             ->scalar('last_name')
-            ->maxLength('last_name', 155)
+            ->maxLength('last_name', 50)
             ->requirePresence('last_name', 'create')
-            ->notEmptyString('last_name');
+            ->notBlank('last_name')
+            ->notEmptyString('last_name', 'Please enter your Last Name')
+            ->add('last_name', [
 
+                'characters' => [
+                    'rule'    => ['custom', '/^[A-Z]+$/i'],
+                    'allowEmpty' => false,
+                    'last' => true,
+                    'message' => 'Please Enter characters only.'
+                ],
+            ]);
         $validator
             ->scalar('phone')
-            ->maxLength('phone', 155)
+            ->maxLength('phone', 50)
             ->requirePresence('phone', 'create')
-            ->notEmptyString('phone');
+            ->notEmptyString('phone', 'Please enter your Phone nunber')
+            ->add('phone', [
+
+                'number' => [
+                    'rule'    => ['custom', '/^[0-9]+$/i'],
+                    'allowEmpty' => false,
+                    'last' => true,
+                    'message' => 'Please Enter numbers only.'
+                ],
+                'minLength' => [
+                    'rule' => ['minLength', 10],
+                    'message' => 'Phone Number need to be 10 characters long',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 10],
+                    'message' => 'Phone Number need to be 10 characters long',
+                ]
+            ]);
 
         $validator
             ->email('email')
             ->requirePresence('email', 'create')
-            ->notEmptyString('email');
+            ->notEmptyString('email', 'Please enter your Email')
+            ->add('email', [
+                [
+                    'rule' => 'validateUnique',
+                    'provider' => 'table',
+                    'message' => 'Email already exist please enter another Email',
+                ],
+
+            ]);
 
         $validator
             ->scalar('password')
-            ->maxLength('password', 155)
+            ->maxLength('password', 50)
             ->requirePresence('password', 'create')
-            ->notEmptyString('password');
+            ->notEmptyString('password', 'Please enter your Password')
+            ->add('password', [
+
+                'characters' => [
+                    'rule'    => ['custom', '/^(?=.*?[A-Z])(?=.*?[\W]).{8,}$/i'],
+                    'allowEmpty' => false,
+                    'last' => true,
+                    'message' => 'Please Enter a 8 character alphanumaric password.
+                    Having atleast one upper and one lower case character and one special character.,
+                    For example: Test@123',
+                ],
+            ]);
 
         $validator
+
             ->scalar('confirm_password')
-            ->maxLength('confirm_password', 155)
+            ->maxLength('confirm_password', 50)
             ->requirePresence('confirm_password', 'create')
-            ->notEmptyString('confirm_password');
+            ->notEmptyString('confirm_password', 'Please enter your confirm_password')
+            ->add('confirm_password', [
+
+                'characters' => [
+                    'rule'    => ['custom', '/^(?=.*?[A-Z])(?=.*?[\W]).{8,}$/i'],
+                    'allowEmpty' => false,
+                    'last' => true,
+                    'message' => 'Please Enter a 8 character alphanumaric password.
+                    Having atleast one upper and one lower case character and one special character.,
+                    For example: Test@123',
+                ],
+
+            ])
+            ->add('confirm_password', [
+                'match' => [
+                    'rule' => ['compareWith', 'password'],
+                    'message' => 'Passwords do not match'
+                ]
+            ]);
 
         $validator
             ->scalar('gender')
-            ->maxLength('gender', 155)
+            ->maxLength('gender', 50)
             ->requirePresence('gender', 'create')
-            ->notEmptyString('gender');
+            ->notEmptyString('gender', 'Please select your Gender');
 
         return $validator;
     }

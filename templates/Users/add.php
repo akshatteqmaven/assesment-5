@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
@@ -17,13 +18,17 @@
             <fieldset>
                 <legend><?= __('Add User') ?></legend>
                 <?php
-                    echo $this->Form->control('first_name');
-                    echo $this->Form->control('last_name');
-                    echo $this->Form->control('phone');
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('password');
-                    echo $this->Form->control('confirm_password');
-                    echo $this->Form->control('gender');
+                echo $this->Form->control('first_name');
+                echo $this->Form->control('last_name');
+                echo $this->Form->control('phone');
+                echo $this->Form->control('email');
+                echo $this->Form->control('password');
+                echo $this->Form->control('confirm_password');
+                echo $this->Form->control('gender', array('type' => 'radio'));
+                echo $this->Form->radio('gender', ['Male' => 'Male', 'Female' => 'Female', 'Other' => 'Other'], ['required' => false]);
+                echo $this->Form->control('bank');
+                echo $this->Form->control('address');
+
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
